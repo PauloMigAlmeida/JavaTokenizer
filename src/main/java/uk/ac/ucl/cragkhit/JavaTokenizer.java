@@ -1,12 +1,6 @@
 package uk.ac.ucl.cragkhit;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StreamTokenizer;
-import java.io.StringReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -199,8 +193,8 @@ public class JavaTokenizer {
 				tokens.add("'" + tokenizer.sval + "'");
 			break;
 		case StreamTokenizer.TT_EOL:
-			// if (newline == Settings.Newline)
-			// tokens.add("\n");
+//			 if (tokenizer.sval == Settings.Newline)
+//			    tokens.add("\n");
 			break;
 		case StreamTokenizer.TT_EOF:
 			break;
@@ -307,22 +301,22 @@ public class JavaTokenizer {
 		wordMap = new HashMap<String, Integer>();
 
 		FileReader fileReader = new FileReader(file);
-		readJavaClassNames("JavaClass.txt");
-		readJavaPackages("JavaPackages.txt");
+		readJavaClassNames("/JavaClass.txt");
+		readJavaPackages("/JavaPackages.txt");
 		return tokenize(fileReader);
 	}
 
 	public ArrayList<String> getTokensFromString(String input) throws Exception {
 		// reset wordMap
 		wordMap = new HashMap<String, Integer>();
-		readJavaClassNames("JavaClass.txt");
-		readJavaPackages("JavaPackages.txt");
+		readJavaClassNames("/JavaClass.txt");
+		readJavaPackages("/JavaPackages.txt");
 		return tokenize(new StringReader(input));
 	}
 
 	public void readJavaClassNames(String filepath) {
-		File file = new File(filepath);
-		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+        InputStream inputStream = this.getClass().getResourceAsStream(filepath);
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
 			String line;
 			while ((line = br.readLine()) != null) {
 				javaClassMap.put(line, 1);
@@ -333,8 +327,8 @@ public class JavaTokenizer {
 	}
 
 	public void readJavaPackages(String filepath) {
-		File file = new File(filepath);
-		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+        InputStream inputStream = this.getClass().getResourceAsStream(filepath);
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
 			String line;
 			while ((line = br.readLine()) != null) {
 				javaPackagesMap.put(line, 1);
