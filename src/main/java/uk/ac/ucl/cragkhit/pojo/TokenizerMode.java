@@ -1,4 +1,6 @@
-package uk.ac.ucl.cragkhit;
+package uk.ac.ucl.cragkhit.pojo;
+
+import uk.ac.ucl.cragkhit.utils.Settings;
 
 public class TokenizerMode {
 	private int word;

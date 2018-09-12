@@ -1,4 +1,4 @@
-package uk.ac.ucl.cragkhit;
+package uk.ac.ucl.cragkhit.utils;
 
 public class Settings {
 	public class Normalize {

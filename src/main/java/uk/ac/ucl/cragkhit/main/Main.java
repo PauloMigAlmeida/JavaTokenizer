@@ -1,4 +1,4 @@
-package uk.ac.ucl.cragkhit;
+package uk.ac.ucl.cragkhit.main;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -11,6 +11,10 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.lang3.StringEscapeUtils;
+import uk.ac.ucl.cragkhit.operation.JavaTokenizer;
+import uk.ac.ucl.cragkhit.utils.Settings;
+import uk.ac.ucl.cragkhit.pojo.TokenizerMode;
+import uk.ac.ucl.cragkhit.operation.nGramGenerator;
 
 public class Main {
 	private static Options options = new Options();

@@ -1,16 +1,21 @@
-package uk.ac.ucl.cragkhit;
+package uk.ac.ucl.cragkhit.operation;
+
+import uk.ac.ucl.cragkhit.pojo.TokenizerMode;
+import uk.ac.ucl.cragkhit.utils.ClasspathReader;
+import uk.ac.ucl.cragkhit.utils.Settings;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class JavaTokenizer {
 	private HashMap<String, Integer> keywordMap = new HashMap<String, Integer>();
 	private HashMap<String, Integer> datatypeMap = new HashMap<String, Integer>();
 	private HashMap<String, Integer> wordMap = new HashMap<String, Integer>();
-	private HashMap<String, Integer> javaClassMap = new HashMap<String, Integer>();
-	private HashMap<String, Integer> javaPackagesMap = new HashMap<String, Integer>();
+	private Map<String, Integer> javaClassMap;
+	private Map<String, Integer> javaPackagesMap;
 	private ArrayList<String> wordList = new ArrayList<String>();
 	private TokenizerMode modes;
 	private ArrayList<String> tokens = new ArrayList<String>();
@@ -194,7 +199,7 @@ public class JavaTokenizer {
 			break;
 		case StreamTokenizer.TT_EOL:
 //			 if (tokenizer.sval == Settings.Newline)
-//			    tokens.add("\n");
+			    tokens.add("\n");
 			break;
 		case StreamTokenizer.TT_EOF:
 			break;
@@ -301,41 +306,25 @@ public class JavaTokenizer {
 		wordMap = new HashMap<String, Integer>();
 
 		FileReader fileReader = new FileReader(file);
-		readJavaClassNames("/JavaClass.txt");
-		readJavaPackages("/JavaPackages.txt");
+		readJavaClassNames();
+		readJavaPackages();
 		return tokenize(fileReader);
 	}
 
 	public ArrayList<String> getTokensFromString(String input) throws Exception {
 		// reset wordMap
 		wordMap = new HashMap<String, Integer>();
-		readJavaClassNames("/JavaClass.txt");
-		readJavaPackages("/JavaPackages.txt");
+		readJavaClassNames();
+		readJavaPackages();
 		return tokenize(new StringReader(input));
 	}
 
-	public void readJavaClassNames(String filepath) {
-        InputStream inputStream = this.getClass().getResourceAsStream(filepath);
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
-			String line;
-			while ((line = br.readLine()) != null) {
-				javaClassMap.put(line, 1);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void readJavaClassNames() {
+        javaClassMap = ClasspathReader.getInstance().getJavaClasses();
 	}
 
-	public void readJavaPackages(String filepath) {
-        InputStream inputStream = this.getClass().getResourceAsStream(filepath);
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
-			String line;
-			while ((line = br.readLine()) != null) {
-				javaPackagesMap.put(line, 1);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void readJavaPackages() {
+        javaPackagesMap = ClasspathReader.getInstance().getJavaPackages();
 	}
 
 	public void setUpKeywordMap() {
